@@ -1,0 +1,53 @@
+import matplotlib.pyplot as plt
+
+class Linea:
+    def __init__(self,p1:Punto, p2:Punto):
+        self.p1 = p1
+        self.p2 = p2
+    def __str__(self):
+        return f"Linea({self.p1} → {self.p2})"
+
+    def dibujaLinea(self):
+        x = [self.p1.x , self.p2.x]
+        y = [self.p1.y , self.p2.y]
+
+        plt.plot(x , y , marker='o', linestyle='-')
+        plt.xlabel('Eje X')
+        plt.ylabel('Eje Y')
+        plt.title('Linea entre los dos Puntos')
+        plt.grid(True)
+        plt.show()
+
+p1 = Punto(4, 2)
+p2 = Punto(4, 5)
+linea = Linea(p1, p2)
+
+print(linea)
+linea.dibujaLinea()
+
+class Circulo:
+    def __init__(self,centro:Punto , radio:float):
+        self.centro = centro
+        self.radio = radio
+
+    def __str__(self):
+        return f'Circulo({self.centro},{self.radio})'
+
+
+def dibujarCirculo(circulo):
+    figura, ejes = plt.subplots()
+    circulo_patch = plt.Circle(circulo.centro, circulo.radio, fill=False, edgecolor='blue', linewidth=2)
+
+    ejes.add_patch(circulo_patch)
+    ejes.set_aspect('equal')
+    ejes.set_xlim(circulo.centro[0] - circulo.radio - 1, circulo.centro[0] + circulo.radio + 1)
+    ejes.set_ylim(circulo.centro[1] - circulo.radio - 1, circulo.centro[1] + circulo.radio + 1)
+
+    plt.grid()
+    plt.show()
+
+
+
+c1 = Circulo((3, 3), 2)
+print(c1)
+dibujarCirculo(c1)
