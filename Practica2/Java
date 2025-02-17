@@ -1,0 +1,103 @@
+package practica1;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.JPanel;
+class Linea extends JPanel {
+    public Punto p1, p2;
+
+    public Linea(Punto p1, Punto p2) {
+        this.p1 = p1;
+        this.p2 = p2;
+    }
+
+    @Override
+    public String toString() {
+        return "Linea(" + p1 + " → " + p2 + ")";
+    }
+    
+    public void dibujarLinea(Graphics g) {
+        g.setColor(Color.RED);
+        g.drawLine((int)p1.x * 50, (int)p1.y * 50, (int)p2.x * 50, (int)p2.y * 50);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        dibujarLinea(g);
+    }
+}
+
+import javax.swing.JFrame;
+public class Lineaprin {
+     public static void main(String[] args) {
+        Punto p1 = new Punto(2, 0);
+        Punto p2 = new Punto(2, 10);
+        Linea linea = new Linea(p1, p2);
+
+        System.out.println(linea);
+
+        JFrame frame = new JFrame("Dibujar Línea");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 400);
+        frame.add(linea);
+        frame.setVisible(true);
+    }
+    
+}
+
+
+
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.JPanel;
+
+/**
+ *
+ * @author LIMBER
+ */
+public class Circulo extends JPanel {
+    public Punto centro;
+    public float radio;
+
+    public Circulo(Punto p1, float radio) {
+        this.centro = p1;
+        this.radio = radio;
+    }
+
+    @Override
+    public String toString() {
+        return "Circulo(" + centro + " → " + radio + ")";
+    }
+
+     public void dibujarCirculo(Graphics g) {
+        g.setColor(Color.BLUE);
+        g.drawOval((int) (centro.x - radio), (int) (centro.y - radio), (int) (2 * radio), (int) (2 * radio));
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        dibujarCirculo(g);
+    }
+
+}
+
+
+import javax.swing.JFrame;
+
+/**
+ *
+ * @author LIMBER
+ */
+public class Clirculoprin {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Dibujar Círculo");
+        Circulo miCirculo = new Circulo(new Punto(200, 200), 100); 
+        frame.add(miCirculo);
+        frame.setSize(400, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+    
+}
