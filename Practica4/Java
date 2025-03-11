@@ -1,0 +1,40 @@
+package practica4;
+
+public class FigurasGeometricas {
+	
+	public float area(float radio) { //circulo
+		return (float)Math.PI*(radio*radio);
+	}
+	
+	public float area(float base , float altura) {//rectangulo
+		return (base * altura);
+	}
+	
+	public float area(float base , int altura) {//triangulo rectangulo
+		return (base*altura)/2;
+	}
+	
+	public float area(float b1 ,float b2 , float altura ) {//trapecio
+		return ((b1+b2)*altura)/2;
+	}
+	
+	public float area(int longitud ,int distancia ) {//pentagono regular
+		return (float)(5*longitud*distancia)/2 ;
+	}
+	
+	public static void main(String[] args) {
+		FigurasGeometricas f1 = new FigurasGeometricas();
+		FigurasGeometricas f2 = new FigurasGeometricas();
+		FigurasGeometricas f3 = new FigurasGeometricas();
+		FigurasGeometricas f4 = new FigurasGeometricas();
+		FigurasGeometricas f5 = new FigurasGeometricas();
+		
+		System.out.println("Resultado del Circulo :" + f1.area(5.3f));
+		System.out.println("Resultado del rectangulo :" + f2.area(10.3f,4.2f));
+		System.out.println("Resultado del triangulo rectangulo :" + f3.area(15.2f,2));
+		System.out.println("Resultado del trapecio :" + f4.area(2.2f,3.1f,15.3f));
+		System.out.println("Resultado del pentagono regular :" + f5.area(15,5));
+
+	}
+
+}
