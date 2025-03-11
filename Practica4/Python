@@ -1,0 +1,51 @@
+import math
+from multimethod import multimethod
+class FiguraGeometricas:
+    # 1 circulo
+    @multimethod
+    def area(self, radio: float ):
+        return math.pi * (radio*radio)
+
+    # 2 rectangulo
+    @multimethod
+    def area(self, base: float , altura: float):
+        return (base * altura)
+
+    # 3 triangulo rectangulo
+    @multimethod
+    def area(self, base: float , altura: int ):
+        return (base * altura)/2
+
+    # 4 trapecio
+    @multimethod
+    def area(self, b1: float , b2: float , altura: float):
+        return ((b1 + b2) * altura)/2
+    # 5 pentagono regular
+    @multimethod
+    def area(self, longitud: int , distancia: int):
+        return (5*longitud*distancia)/2
+
+
+figura1 = FiguraGeometricas()
+figura2 = FiguraGeometricas()
+figura3 = FiguraGeometricas()
+figura4 = FiguraGeometricas()
+figura5 = FiguraGeometricas()
+
+r1 = figura1.area(5.3)
+r2 = figura2.area(10.3,4.2)
+r3 = figura3.area(15.2,2)
+r4 = figura4.area(2.2,3.1,15.3)
+r5 = figura5.area(15,5)
+
+print("Resultado del Circulo : ",r1)
+print("Resultado del rectangulo : ",r2)
+print("Resultado del triangulo rectangulo : ",r3)
+print("Resultado del trapecio : ",r4)
+print("Resultado del pentagono regular : ",r5)
+
+
+
+
+
+
