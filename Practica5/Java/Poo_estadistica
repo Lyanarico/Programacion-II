@@ -1,0 +1,50 @@
+package practica5;
+
+import java.util.Scanner;
+
+class Estadistica {
+    private double[] numeros;
+
+    public Estadistica(double[] numeros) {
+        this.numeros = numeros;
+    }
+
+    public double calcularPromedio() {
+        double suma = 0;
+        for (double num : numeros) {
+            suma += num;
+        }
+        return suma / numeros.length;
+    }
+
+    public double calcularDesviacion() {
+        double promedio = calcularPromedio();
+        double sumaCuadrados = 0;
+        for (double num : numeros) {
+            sumaCuadrados += Math.pow(num - promedio, 2);
+        }
+        return Math.sqrt(sumaCuadrados / (numeros.length - 1));
+    }
+
+    public void mostrarResultados() {
+        System.out.printf("El promedio es %.5f%n", calcularPromedio());
+        System.out.printf("La desviación estándar es %.5f%n", calcularDesviacion());
+    }
+}
+
+public class PE_POO {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        double[] numeros = new double[10];
+
+        System.out.println("Ingrese 10 números separados por espacio:");
+        for (int i = 0; i < 10; i++) {
+            numeros[i] = scanner.nextDouble();
+        }
+
+        Estadistica estadisticas = new Estadistica(numeros);
+        estadisticas.mostrarResultados();
+
+        scanner.close();
+    }
+}
