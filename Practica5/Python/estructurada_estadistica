@@ -1,0 +1,29 @@
+import math
+
+
+def promedio(numeros):
+    return sum(numeros) / len(numeros)
+
+
+def desviacion(numeros, promedio):
+    suma_cuadrados = sum((x - promedio) ** 2 for x in numeros)
+    return math.sqrt(suma_cuadrados / (len(numeros) - 1))
+
+
+def main():
+    # Solicitar los 10 números al usuario
+    numeros = list(map(float, input("Ingrese 10 números separados por espacio: ").split()))
+
+    if len(numeros) != 10:
+        print("Debe ingresar exactamente 10 números.")
+        return
+
+    calcular_promedio = promedio(numeros)
+    calcular_desviacion = desviacion(numeros, promedio)
+
+    print(f"El promedio es {promedio:.5f}")
+    print(f"La desviación estándar es {desviacion:.5f}")
+
+
+# Ejecutar el programa
+main()
