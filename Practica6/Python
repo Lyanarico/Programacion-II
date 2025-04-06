@@ -1,0 +1,106 @@
+
+
+import random
+
+
+class Juego:
+    def __init__(self, numeroDeVidas: int, record: int = 0):
+        self.numeroDeVidas = numeroDeVidas
+        self.record = record
+
+    def reiniciaPartida(self):
+        self.record = 0
+        print("Se reinició la partida")
+
+    def actualizaRecord(self, cont):
+        print(f"El record de la partida es: {cont}")
+
+    def quitaVida(self):
+        return self.numeroDeVidas > 0
+
+    def menosVida(self):
+        self.numeroDeVidas -= 1
+        return self.numeroDeVidas > 0
+
+
+class JuegoAdivinaNumero(Juego):
+    def __init__(self, numeroDeVidas: int, numeroAAdivinar: int = None):
+        super().__init__(numeroDeVidas)
+        self.numeroAAdivinar = numeroAAdivinar if numeroAAdivinar is not None else random.randint(0, 10)
+
+    def validaNumero(self, numero: int):
+        if 0 <= numero <= 10:
+            return True
+        else:
+            print("Error: El número debe estar entre 0 y 10.")
+            return False
+
+    def juega(self):
+        contador = 0
+        self.reiniciaPartida()
+        print("Adivina un número que está entre 0 y 10")
+        while self.quitaVida():
+            self.numeroAAdivinar = random.randint(0, 10)
+            while contador != contador + 1 and self.quitaVida():
+                numero = int(input("Introduce tu número: "))
+                if not self.validaNumero(numero):  # Validar el número ingresado
+                    continue
+
+                if self.numeroAAdivinar == numero:
+                    print("¡Acertaste!")
+                    contador += 1
+                    print("Adivina otro número")
+                else:
+                    self.menosVida()
+                    if self.quitaVida():
+                        if numero < self.numeroAAdivinar:
+                            print("El número a adivinar es mayor, ¡intenta de nuevo!")
+                        else:
+                            print("El número a adivinar es menor, ¡intenta de nuevo!")
+
+        print("Fin de la partida")
+        if contador > 0:
+            self.actualizaRecord(contador)
+        else:
+            print("GAME OVER")
+
+
+class JuegoAdivinaImpar(JuegoAdivinaNumero):
+    def __init__(self, numeroDeVidas: int):
+        super().__init__(numeroDeVidas)
+
+    def validaNumero(self, numero: int) -> bool:
+        if 0 <= numero <= 10:
+            if numero % 2 != 0:
+                return True
+            else:
+                print("Error: El número no es impar.")
+                return False
+        else:
+            print("Error: El número está fuera del rango 0-10.")
+            return False
+
+
+class JuegoAdivinaPar(JuegoAdivinaNumero):
+    def __init__(self, numeroDeVidas: int):
+        super().__init__(numeroDeVidas)
+
+    def validaNumero(self, numero: int) -> bool:
+        if 0 <= numero <= 10:
+            if numero % 2 == 0:
+                return True
+            else:
+                print("Error: El número no es par.")
+                return False
+        else:
+            print("Error: El número está fuera del rango 0-10.")
+            return False
+
+
+P1 = JuegoAdivinaNumero(numeroDeVidas=3)
+P2 = JuegoAdivinaImpar(numeroDeVidas=3)
+P3 = JuegoAdivinaPar(numeroDeVidas=3)
+
+P1.juega()
+P2.juega()
+P3.juega()
