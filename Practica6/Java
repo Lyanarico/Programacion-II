@@ -1,0 +1,170 @@
+package labo3;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Juego {
+	//atributos
+	private int numeroDeVidas;
+	private int record;
+	
+
+	//metodos 
+	public Juego(int numeroDeVidas) {
+		this.numeroDeVidas = numeroDeVidas;
+	}
+	
+	
+	public void reiniciaPartida() {	
+		this.record = 0;
+		System.out.println(" Se Reinicio la partida ");
+	}
+
+	public void actualizaRecord(int cont) {
+		System.out.println("El record de la partida es :" + cont);
+	}
+	
+	public boolean quitaVida() { 
+	    return this.numeroDeVidas > 0; 
+	}
+	
+	public boolean menosVida() {
+		this.numeroDeVidas--;
+		return this.numeroDeVidas > 0;
+	}
+
+	
+}
+
+
+
+
+ 
+public class JuegoAdivinaNumero extends Juego {
+	//atributos
+	private int numeroAAdivinar;
+
+	//metodos
+	  public JuegoAdivinaNumero(int numeroDeVidas) {
+		  super(numeroDeVidas);
+	  }
+	  
+	
+	
+	
+	//metodo juega
+	public void juega() {
+		int contador = 0;
+		reiniciaPartida();
+		Random random = new Random();
+		System.out.println("Adivina un numero que esta entre 0 y 10 ");
+		Scanner sc = new Scanner(System.in);
+		while(quitaVida()) {
+			int numeroAAdivinar = random.nextInt(11);
+			while(contador != contador+1 && quitaVida()) {
+				int numero = sc.nextInt();
+				
+				validaNumero(numero);   //validando numero intro por teclado
+				
+				if(numeroAAdivinar == numero ) {
+					System.out.println("Acertaste!!");
+					contador++;
+					System.out.println("Adivina otro numero");
+					
+				}
+				else {
+					menosVida();
+					if(quitaVida()) {
+						if(numero < numeroAAdivinar) {
+							System.out.println("El numero a adivinar es mayor, intenta de nuevo!!!");
+						}
+						else {
+							System.out.println("El numero a adivinar es menor, intenta de nuevo!!! ");
+						}
+					}
+					
+				}
+			}
+	
+		}
+		System.out.println(" Fin de la partida ");
+		if(contador > 0) {
+			actualizaRecord(contador);
+		}
+		else {
+			System.out.println("GAME OVER");
+		}
+		
+		
+		
+	}
+	
+	//metodo validaNumero
+	
+	public boolean validaNumero(int numero) {
+		return numero >= 0 && numero <= 10 ;
+	}
+	
+}
+
+public class JuegoAdivinaPar  extends JuegoAdivinaNumero {
+ 
+	   public JuegoAdivinaPar(int numeroDeVidas) {
+		super(numeroDeVidas);
+	
+	}
+
+	@Override
+	    public boolean validaNumero(int numero) {
+	        if (numero >= 0 && numero <= 10) {
+	            if (numero % 2 == 0) {
+	                return true;
+	            } else {
+	                System.out.println("Error: El número no es par.");
+	                return false;
+	            }
+	        } else {
+	            System.out.println("Error: El número está fuera del rango 0-10.");
+	            return false;
+	        }
+	    }
+}
+
+public class JuegoAdivinaImpar extends JuegoAdivinaNumero{
+	
+	
+	public JuegoAdivinaImpar(int numeroDeVidas) {
+		super(numeroDeVidas);
+		
+	}
+
+	@Override
+    public boolean validaNumero(int numero) {
+        if (numero >= 0 && numero <= 10) {
+            if (numero % 2 != 0) {
+                return true;
+            } else {
+                System.out.println("Error: El número no es impar.");
+                return false;
+            }
+        } else {
+            System.out.println("Error: El número está fuera del rango 0-10.");
+            return false;
+        }
+    }
+}
+
+public class Aplicacion {
+
+	public static void main(String[] args) {
+		JuegoAdivinaNumero P1 = new JuegoAdivinaNumero(3);
+		JuegoAdivinaPar P2 = new JuegoAdivinaPar(3);
+		JuegoAdivinaImpar P3 = new JuegoAdivinaImpar(3);
+		
+		
+		P1.juega();
+		P2.juega();
+		P3.juega();
+
+	}
+
+}
