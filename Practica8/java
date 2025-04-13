@@ -1,0 +1,103 @@
+package practica8;
+class A{
+    public int x;
+    public int z;
+
+    public A(int x, int z){
+        this.x = x;
+        this.z = z;
+    }
+
+    public void incrementaXZ(){
+        this.x++;
+        this.z++;
+    }
+
+    public void incrementaZ(){
+        this.z++;
+    }
+
+
+
+    
+}
+
+class B{
+    public int y;
+    public int z;
+
+    public B(int y, int z){
+        this.y = y;
+        this.z = z;
+    }
+
+    public void incrementaYZ(){
+        this.y++;
+        this.z++;
+    }
+
+    public void incrementaZ(){
+        this.z++;
+    }
+
+ 
+    
+}
+
+class D extends A{
+    public int y;
+    private B b;
+
+    public D(int x,int y, int z){
+       super(x, z);
+       this.y = y;
+       this.b = new B(y, z);
+    }
+
+    public void incrementaXYZ(){
+        this.x++;
+        this.y++;
+        super.z++;
+        b.z = super.z;
+    }
+
+    public void incrementaYZ(){
+        b.incrementaYZ();
+        this.y = b.y+1;
+        super.z = b.z+1;
+    }
+
+   
+
+    
+}
+
+package practica8;
+
+public class Main {
+    public static void main(String[] args) {
+        
+        D d = new D(2, 3, 5);
+        
+        
+        System.out.println("Valores iniciales:");
+        System.out.println("x = " + d.x + ", y = " + d.y + ", z = " + d.z);
+        
+       
+        d.incrementaXYZ();  
+        System.out.println("\nmetodo de la clase D:");
+        System.out.println("x = " + d.x + ", y = " + d.y + ", z = " + d.z);
+        
+        d.incrementaXZ();    
+        System.out.println("\nmetodo de la clase A:");
+        System.out.println("x = " + d.x + ", z = " + d.z);
+        
+        d.incrementaYZ();    
+        System.out.println("\nmetodo de la clase B:");
+        System.out.println("y = " + d.y + ", z = " + d.z);
+        
+       
+        System.out.println("\nValores finales:");
+        System.out.println("x = " + d.x + ", y = " + d.y + ", z = " + d.z);
+    }
+}
