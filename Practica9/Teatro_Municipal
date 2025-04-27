@@ -1,0 +1,130 @@
+from abc import ABC,abstractmethod
+
+from tkinter import *
+from tkinter import ttk
+import ttkbootstrap as tb 
+from ttkbootstrap.constants import * 
+
+#Clases de boletos 
+class Boleto(ABC):
+    def __init__(self, numero):
+        self.__numero = numero
+        self.__precio = 0.0
+        
+    @abstractmethod
+    def calcular_precio(self):
+        pass
+
+
+    def set_precio(self,precio):
+        self.__precio = precio
+        
+    def get_precio(self):
+        return self.__precio
+    
+    def get_numero(self):
+        return self.__numero
+    
+    def __str__(self):
+        return f"Numero: {self.get_numero()}, Precio: {self.get_precio():.1f}"
+#clase palco
+class Palco(Boleto):
+    def __init__(self, numero):
+        super().__init__(numero)
+        self.set_precio(100.0)
+        
+    def calcular_precio(self):
+        return self.get_precio()
+#clase platea
+class Platea(Boleto):
+    def __init__(self, numero, dias_anticipacion):
+        super().__init__(numero)
+        
+        if dias_anticipacion >= 10:
+            self.set_precio(50.0)
+            
+        else:
+            self.set_precio(60.0)
+
+    def calcular_precio(self):
+        return self.get_precio()
+#clase galeria
+
+
+def generar_boleto():
+    tipo = tipo_var.get()
+    try:
+        numero = int(numero_entry.get())
+        dias = int(dias_entry.get()) if tipo != "Palco" else 0
+
+        if tipo == "Palco":
+            boleto = f"Número: {numero}, Precio: 100.0"
+        elif tipo == "Platea":
+            boleto = f"Número: {numero}, Precio: {150.0 * dias}"
+        elif tipo == "Galeria":
+            boleto = f"Número: {numero}, Precio: {50.0 * dias}"
+        else:
+            resultado_var.set("Tipo inválido")
+            return
+
+        resultado_var.set(boleto)
+    except ValueError:
+        resultado_var.set("Error: ingrese valores válidos")
+
+def salir():
+    ventana.destroy()
+
+
+ventana = tb.Window(themename="flatly")  
+ventana.title("Teatro Municipal")
+ventana.geometry("400x500")
+ventana.resizable(False, False)
+
+# Título principal
+titulo = tb.Label(ventana, text="Teatro Municipal", font=("Helvetica", 24, "bold"), bootstyle="primary")
+titulo.pack(pady=20)
+
+# Marco para datos
+frame = tb.LabelFrame(ventana, text="Datos del Boleto", bootstyle="info")
+frame.pack(padx=20, pady=10, fill="x")
+
+# Tipo de boleto
+tipo_var = tb.StringVar()
+
+palco_rb = tb.Radiobutton(frame, text="Palco", variable=tipo_var, value="Palco", bootstyle="success")
+palco_rb.grid(row=0, column=0, padx=5, pady=10)
+
+platea_rb = tb.Radiobutton(frame, text="Platea", variable=tipo_var, value="Platea", bootstyle="warning")
+platea_rb.grid(row=0, column=1, padx=5, pady=10)
+
+galeria_rb = tb.Radiobutton(frame, text="Galeria", variable=tipo_var, value="Galeria", bootstyle="danger")
+galeria_rb.grid(row=0, column=2, padx=5, pady=10)
+
+# Número
+numero_label = tb.Label(frame, text="Número:", font=("Helvetica", 10))
+numero_label.grid(row=1, column=0, pady=5, sticky="w")
+numero_entry = tb.Entry(frame)
+numero_entry.grid(row=1, column=1, pady=5, sticky="ew", columnspan=2)
+
+# Días
+dias_label = tb.Label(frame, text="Cant. Días para el Evento:", font=("Helvetica", 10))
+dias_label.grid(row=2, column=0, pady=5, sticky="w")
+dias_entry = tb.Entry(frame)
+dias_entry.grid(row=2, column=1, pady=5, sticky="ew", columnspan=2)
+
+# Botones
+botones_frame = tb.Frame(ventana)
+botones_frame.pack(pady=20)
+
+vender_btn = tb.Button(botones_frame, text="Vende", command=generar_boleto, bootstyle="success")
+vender_btn.grid(row=0, column=0, padx=10)
+
+salir_btn = tb.Button(botones_frame, text="Salir", command=salir, bootstyle="danger")
+salir_btn.grid(row=0, column=1, padx=10)
+
+# Resultado
+resultado_var = tb.StringVar()
+resultado_label = tb.Label(ventana, textvariable=resultado_var, font=("Helvetica", 14), bootstyle="info")
+resultado_label.pack(pady=20)
+
+ventana.mainloop()
