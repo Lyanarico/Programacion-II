@@ -1,0 +1,84 @@
+from abc import ABC, abstractmethod
+import math
+import random
+
+class Coloreado(ABC):
+    @abstractmethod
+    def comoColorear(self) -> str:
+        pass
+    
+class Figura(ABC):
+    def __init__(self, color: str = "negro"):
+        self._color = color
+    
+    def setColor(self, color: str):
+        self._color = color
+    
+    def getColor(self) -> str:
+        return self._color
+    
+    def __str__(self) -> str:
+        return f"Figura de color {self._color}"
+    
+    @abstractmethod
+    def area(self) -> float:
+        pass
+    
+    @abstractmethod
+    def perimetro(self) -> float:
+        pass
+    
+class Cuadrado(Figura, Coloreado):
+    def __init__(self, lado: float, color: str = "negro"):
+        super().__init__(color)
+        self._lado = lado
+    
+    def area(self) -> float:
+        return self._lado ** 2
+    
+    def perimetro(self) -> float:
+        return 4 * self._lado
+    
+    def comoColorear(self) -> str:
+        return "Colorear los cuatro lados"
+    
+    def __str__(self) -> str:
+        return f"Cuadrado de lado {self._lado} y color {self.getColor()}"
+    
+class Circulo(Figura):
+    def __init__(self, radio: float, color: str = "negro"):
+        super().__init__(color)
+        self._radio = radio
+    
+    def area(self) -> float:
+        return math.pi * (self._radio ** 2)
+    
+    def perimetro(self) -> float:
+        return 2 * math.pi * self._radio
+    
+    def __str__(self) -> str:
+        return f"Círculo de radio {self._radio} y color {self.getColor()}"
+    
+def main():
+    figuras = []
+    
+    for _ in range(5):
+        tipo = random.randint(1, 2)
+        
+        if tipo == 1:  
+            lado = random.uniform(1.0, 10.0)
+            figuras.append(Cuadrado(lado))
+        else: 
+            radio = random.uniform(1.0, 10.0)
+            figuras.append(Circulo(radio))
+    
+    for figura in figuras:
+        print("\n" + str(figura))
+        print(f"Área: {figura.area():.2f}")
+        print(f"Perímetro: {figura.perimetro():.2f}")
+        
+        if isinstance(figura, Coloreado):
+            print(figura.comoColorear())
+
+if __name__ == "__main__":
+    main()
