@@ -1,0 +1,124 @@
+from multimethod import multimethod
+
+class LineaTeleferico:
+    def __init__(self, color, tramo, nroCabinas, nroEmpleados=0, empleados=None, edades=None, sueldos=None):
+        self.color = color
+        self.tramo = tramo
+        self.nroCabinas = nroCabinas
+        self.nroEmpleados = nroEmpleados
+        self.empleados = empleados if empleados else []
+        self.edades = edades if edades else []
+        self.sueldos = sueldos if sueldos else []
+
+    # B
+    def eliminar_por_apellido(self, apellido):
+        i = 0
+        while i < self.nroEmpleados:
+            nom = self.empleados[i].split()
+            ape_paterno = nom[-2]
+            ape_materno = nom[-1]
+
+            if ape_paterno == apellido or ape_materno == apellido:
+                del self.empleados[i]
+                del self.edades[i]
+                del self.sueldos[i]
+                self.nroEmpleados -= 1
+            else:
+                i += 1
+
+    # C
+    def __sub__(self, otro):
+        if self.nroEmpleados > 0:
+            empleado = self.empleados.pop(0)
+            edad = self.edades.pop(0)
+            sueldo = self.sueldos.pop(0)
+            self.nroEmpleados -= 1
+
+            otro.empleados.append(empleado)
+            otro.edades.append(edad)
+            otro.sueldos.append(sueldo)
+            otro.nroEmpleados += 1
+
+    # D - Mostrar empleado con mayor edad
+    @multimethod
+    def mostrar_empleados(self):
+        if self.nroEmpleados == 0:
+            print("No hay empleados.")
+            return
+
+        max_edad = max(self.edades)
+        for i in range(self.nroEmpleados):
+            if self.edades[i] == max_edad:
+                print(f"Empleado: {self.empleados[i]} ,Edad: {self.edades[i]}")
+
+    # D - Mostrar empleado con mayor sueldo
+    @multimethod
+    def mostrar_empleados(self, sueldo: float):
+        if self.nroEmpleados == 0:
+            print("No hay empleados.")
+            return
+
+        mostrados = False
+        for i in range(self.nroEmpleados):
+            if self.sueldos[i] > sueldo:
+                print(f"Empleado: {self.empleados[i]} , Sueldo: {self.sueldos[i]}")
+                mostrados = True
+
+        if not mostrados:
+            print(f"No hay empleados con sueldo mayor a {sueldo}.")
+
+
+    def __str__(self):
+        info = f"--- Línea {self.color} ---\n"
+        info += f"Tramo: {self.tramo}\n"
+        info += f"Número de cabinas: {self.nroCabinas}\n"
+        info += f"Número de empleados: {self.nroEmpleados}\n"
+
+        if self.nroEmpleados == 0:
+            info += "No hay empleados.\n"
+        else:
+            info += "Lista de empleados:\n"
+            for i in range(self.nroEmpleados):
+                info += f"{i + 1}. {self.empleados[i]}, Edad: {self.edades[i]}, Sueldo: {self.sueldos[i]}\n"
+
+        return info
+
+
+#A
+
+linea_azul = LineaTeleferico("Rojo", "Estación Central, Estación Cementerio, Estación 16 de Julio", 20,4,
+    ["Pedro Rojas Luna", "Lucy Sosa Rios", "Ana Perez Rojas", "Saul Arce Calle"],
+    [35, 43, 26, 29],
+    [2500, 3250, 2700, 2500],
+    )
+
+linea_amarilla = LineaTeleferico(
+    "Amarillo", 
+    "Estación Sur, Estación Universidad", 
+    35, 
+    3,
+    ["Juan Mamani Quispe", "Maria Lopez Perez", "Carlos Fernandez Garcia"],
+    [40, 32, 28],
+    [3000, 2800, 2600]
+)
+
+print(linea_azul)
+print("---------------------")
+print(linea_amarilla)
+print("---------------------")
+print("Muestra empleado con mayor edad")
+linea_azul.mostrar_empleados()  
+print("\n Empleados con mayor sueldo ")
+linea_azul.mostrar_empleados(2700.3)
+
+print("\nEliminando por apellido ")
+linea_azul.eliminar_por_apellido("Lopez")
+
+
+print("\nTransfiriendo un empleado ")
+linea_azul - linea_amarilla
+
+print(linea_azul)
+print()
+print(linea_amarilla)
+
