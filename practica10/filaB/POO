@@ -1,0 +1,122 @@
+from multimethod import multimethod
+
+class Ministerio:
+    def __init__(self, nombre, direccion, nroEmpleados=0, empleados=None, edades=None, sueldos=None):
+        self.nombre = nombre
+        self.direccion = direccion
+        self.nroEmpleados = nroEmpleados
+        self.empleados = empleados if empleados else []
+        self.edades = edades if edades else []
+        self.sueldos = sueldos if sueldos else []
+
+    def __str__(self):
+        info = f"--- Ministerio {self.nombre} ---\n"
+        info += f"Dirección: {self.direccion}\n"
+        info += f"Número de empleados: {self.nroEmpleados}\n"
+        if self.nroEmpleados == 0:
+            info += "Sin empleados.\n"
+        else:
+            info += "Empleados:\n"
+            for i in range(self.nroEmpleados):
+                info += f"  {i+1}. {self.empleados[i]} | Edad: {self.edades[i]} | Sueldo: {self.sueldos[i]}\n"
+        return info
+
+    # b
+    def eliminar_edad(self, edad_x):
+        i = 0
+        while i < self.nroEmpleados:
+            if self.edades[i] == edad_x:
+                del self.empleados[i]
+                del self.edades[i]
+                del self.sueldos[i]
+                self.nroEmpleados -= 1
+            else:
+                i += 1
+
+    # c
+    def __add__(self, otro):
+        if otro.nroEmpleados > 0:
+            empleado = otro.empleados.pop(0)
+            edad = otro.edades.pop(0)
+            sueldo = otro.sueldos.pop(0)
+
+            self.empleados.append(empleado)
+            self.edades.append(edad)
+            self.sueldos.append(sueldo)
+
+            self.nroEmpleados += 1
+            otro.nroEmpleados -= 1
+
+            print(f"Empleado '{empleado}' transferido de {otro.nombre} a {self.nombre}.")
+        else:
+            print(f"{otro.nombre} no tiene empleados para transferir.")
+        return self
+
+
+    # d1) Mostrar empleados con menor edad
+    @multimethod
+    def mostrar_empleados(self):
+        if not self.edades:
+            print("Sin empleados.")
+            return
+        min_edad = min(self.edades)
+        print(f"Empleados con menor edad ({min_edad}):")
+        for i in range(self.nroEmpleados):
+            if self.edades[i] == min_edad:
+                print(f"  {self.empleados[i]} | Edad: {self.edades[i]} ")
+
+    # d2) Mostrar empleados con menor sueldo
+
+            
+    @multimethod
+    def mostrar_empleados(self, sueldo: float):
+        if self.nroEmpleados == 0:
+            print("No hay empleados.")
+            return
+
+        mostrados = False
+        for i in range(self.nroEmpleados):
+            if self.sueldos[i] < sueldo:
+                print(f"Empleado: {self.empleados[i]} , Sueldo: {self.sueldos[i]}")
+                mostrados = True
+
+        if not mostrados:
+            print(f"No hay empleados con sueldo menor a {sueldo}.")
+            
+            
+            
+            
+# Instanciamos dos Ministerios
+min1 = Ministerio("Salud", "Av. Siempre Viva 123", 3,
+                  empleados=["Ana", "Luis", "Clara"],
+                  edades=[30, 25, 25],
+                  sueldos=[1000.0, 1200.0, 1100.0])
+
+min2 = Ministerio("Educación", "Calle Falsa 456", 2,
+                  empleados=["Juan", "Elena"],
+                  edades=[40, 22],
+                  sueldos=[1300.0, 900.0])
+
+# Mostramos información inicial
+print(min1)
+print(min2)
+
+# Usamos mostrar_empleados sin argumentos → muestra los de menor edad
+print(" Empleados más jóvenes ")
+min1.mostrar_empleados()
+
+print("\n Empleados ")
+min2.mostrar_empleados(1000.0)
+
+
+print("\n Eliminando empleados ")
+min1.eliminar_edad(25)
+print(min1)
+
+print("\n Transfiriendo empleado")
+min1 + min2 
+print(min1)
+print(min2)
+
+            
+
