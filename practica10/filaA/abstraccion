@@ -1,0 +1,92 @@
+class ComunidadAfectada:
+    def __init__(self, departamento, comunidad, nivel_contaminacion,metales_contaminantes=None):
+        self.departamento = departamento
+        self.comunidad = comunidad
+        self.nivel_contaminacion = nivel_contaminacion
+        self.metales_contaminantes = metales_contaminantes if metales_contaminantes else []
+    
+    def exigirCompensacion(self):
+        return f"La comunidad {self.comunidad} exige compensación por nivel de contaminación {self.nivel_contaminacion}"
+    
+    def realizarEstudios(self):
+        return f"Estudios iniciados en {self.comunidad}, Departamento {self.departamento}"
+    
+    def __str__(self):
+        metales = ", ".join(self.metales_contaminantes) if self.metales_contaminantes else "Ninguno"
+        return (f"Comunidad Afectada:\n"
+                f"- Departamento: {self.departamento}\n"
+                f"- Comunidad: {self.comunidad}\n"
+                f"- Nivel Contaminación: {self.nivel_contaminacion}\n"
+                f"- Metales Contaminantes: {metales}")
+
+
+class EmpresaMinera:
+    def __init__(self, nombre, ganancias,metales_extraidos=None,proyectos_activos=None):
+        self.nombre = nombre
+        self.ganancias = ganancias
+        self.metales_extraidos = metales_extraidos if metales_extraidos else []
+        self.proyectos_activos = proyectos_activos if proyectos_activos else []
+    
+    def fondoCompensacion(self, n):
+        self.ganancias -= n
+        return f"{self.nombre} aportó ${n} al fondo de compensación. Ganancias restantes: ${self.ganancias}"
+    
+    def evaluarImpactoAmb(self):
+        return f"Evaluación de impacto ambiental iniciada para {self.nombre}"
+    
+    def __str__(self):
+        metales = ", ".join(self.metales_extraidos) if self.metales_extraidos else "Ninguno"
+        proyectos = ", ".join(self.proyectos_activos) if self.proyectos_activos else "Ninguno"
+        return (f"Empresa Minera:\n"
+                f"- Nombre: {self.nombre}\n"
+                f"- Ganancias: ${self.ganancias}\n"
+                f"- Metales Extraídos: {metales}\n"
+                f"- Proyectos Activos: {proyectos}")
+
+
+class Gobierno:
+    def __init__(self, presidente,presupuesto_amb,ministerios=None):
+        self.presidente = presidente
+        self.ministerios = ministerios if ministerios else []
+        self.presupuesto_amb = presupuesto_amb
+        self.ha_actuado = False
+
+    def evaluarconta(self, c):
+        self.ha_actuado = True
+        return f"Gobierno evalúa carta de la comunidad {c.comunidad}"
+    
+    def sancionarEmp(self, n, m):
+        n.ganancias -= m
+        self.ha_actuado = True
+        return f"Gobierno sanciona a {n.nombre} con ${m}"
+    
+    def __str__(self):
+        ministerios = ", ".join(self.ministerios) if self.ministerios else "Ninguno"
+        actuado = "Sí" if self.ha_actuado else "No"
+        return (f"Gobierno:\n"
+                f"- Presidente: {self.presidente}\n"
+                f"- Ministerios: {ministerios}\n"
+                f"- Presupuesto Ambiental: ${self.presupuesto_amb}\n"
+                f"- Ha actuado: {actuado}")
+
+
+print("\n=== EJEMPLO ===")
+
+
+comunidad = ComunidadAfectada("Oruro", "Celendín", 7.8,["plomo","mercurio"])
+
+
+empresa = EmpresaMinera("Minera Yanacocha", 2500000,["oro","plata"],["Expancion sur"])
+
+gobierno = Gobierno("Dina Boluarte", 10000000,["Ministerio del Ambiente","Ministerio de Energía y Minas"])
+
+
+print(comunidad.exigirCompensacion())
+print(empresa.fondoCompensacion(500000))
+print(gobierno.evaluarconta(comunidad))
+print(gobierno.sancionarEmp(empresa, 300000))
+
+# Mostrar objetos con _str_
+print(comunidad)
+print(empresa)
+print(gobierno)
