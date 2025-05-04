@@ -1,0 +1,91 @@
+class Region:
+    def __init__(self, nombre, tipoClima, tipoSuelo,barrerasGeo=None):
+        self.nombre = nombre
+        self.tipoClima = tipoClima
+        self.barrerasGeo = barrerasGeo if barrerasGeo else []
+        self.tipoSuelo = tipoSuelo
+    
+    def calcularBio(self):
+        return f"Cálculo de biodiversidad para {self.nombre} (Clima: {self.tipoClima}, Suelo: {self.tipoSuelo})"
+    
+    def evaluarBarreraGeo(self):
+        return f"Evaluando barrera geográfica: {self.barrerasGeo} en {self.nombre}"
+    
+    def __str__(self):
+        barrera = ", ".join(self.barrerasGeo) if self.barrerasGeo else "Ninguno"
+        return (f"Región:\n"
+                f"- Nombre: {self.nombre}\n"
+                f"- Tipo Clima: {self.tipoClima}\n"
+                f"- Barreras Geográficas: {barrera}\n"
+                f"- Tipo Suelo: {self.tipoSuelo}")
+
+
+class Clima:
+    def __init__(self, estacion, temperaturaPromedio, precipitacionAnual, lugar):
+        self.estacion = estacion
+        self.temperaturaPromedio = temperaturaPromedio
+        self.precipitacionAnual = precipitacionAnual
+        self.lugar = lugar
+    
+    def compararClima(self, n):
+        return (f"Comparando climas:\n"
+                f"{self.lugar}: {self.temperaturaPromedio}°C, {self.precipitacionAnual}mm\n"
+                f"{n.lugar}: {n.temperaturaPromedio}°C, {n.precipitacionAnual}mm")
+    
+    def mostrarEstacion(self):
+        return f"Estación actual en {self.lugar}: {self.estacion}"
+    
+    def __str__(self):
+        return (f"Clima:\n"
+                f"- Lugar: {self.lugar}\n"
+                f"- Estación: {self.estacion}\n"
+                f"- Temp. Promedio: {self.temperaturaPromedio}°C\n"
+                f"- Precipitación Anual: {self.precipitacionAnual}mm")
+
+
+class Investigador:
+    def __init__(self, nombre, institucion ,especialidad, lugarInv):
+        self.nombre = nombre
+        self.institucion = institucion
+        self.especialidad = especialidad
+        self.lugarInv = lugarInv
+    
+    def mostrarInst(self):
+        return f"Institución: {self.institucion}"
+    
+    def compararInv(self, n):
+        return (f"Comparativa investigadores:\n"
+                f"{self.nombre}: {self.especialidad} en {self.lugarInv}\n"
+                f"{n.nombre}: {n.especialidad} en {n.lugarInv}")
+    
+    def __str__(self):
+        return (f"Investigador:\n"
+                f"- Nombre: {self.nombre}\n"
+                f"- Especialidad: {self.especialidad}\n"
+                f"- Institución: {self.institucion}\n"
+                f"- Lugar Investigación: {self.lugarInv}")
+
+
+
+print("\n=== EJEMPLO  ===")
+
+region1 = Region("Amazonía", "Tropical húmedo", "Arcilloso", ["Ríos,selva"])
+region2 = Region("Andes", "Templado frío", ["Montañas","rocoso"], "frio")
+
+
+clima1 = Clima("primavera", 26.5, 3000, "Iquitos")
+clima2 = Clima("verano", 12.0, 500, "Cusco")
+
+
+investigador1 = Investigador("Carlos Bustamante", "UNMSM", "Ecología", "Reserva Tambopata")
+investigador2 = Investigador("María Fernández", "UNI", "Geología", "Cordillera Blanca")
+
+
+print(region1.calcularBio())
+print(region2.evaluarBarreraGeo())
+print(clima1.compararClima(clima2))
+print(investigador1.compararInv(investigador2))
+
+print(region1)
+print(clima1)
+print(investigador1)
