@@ -1,0 +1,76 @@
+class Anuncio:
+    def __init__(self,numero,precio):
+        self.numero = numero
+        self.precio = precio
+
+    def __str__(self):
+        return f"Anuncio: {self.numero}-{self.precio}"
+
+
+
+
+class Artista:
+    def __init__(self, nombre, ci, añosExp):
+        self.nombre = nombre
+        self.ci = ci
+        self.añosExperiencia = añosExp
+
+    def __str__(self):
+        return f"Artista: {self.nombre}-{self.ci}-{self.añosExperiencia}"
+
+
+class Obra:
+    def __init__(self , titulo, material,a1:Artista,a2:Artista):
+        self.titulo = titulo
+        self.material = material
+        self.artistas = [Artista(a1.nombre,a1.ci,a1.añosExperiencia),
+                         Artista(a2.nombre,a2.ci,a2.añosExperiencia)]
+
+        self.anuncio = None
+
+    def agregar_anuncio(self,b:Anuncio):
+        self.anuncio = b
+
+
+class Pintura(Obra):
+    def __init__(self ,titulo, material,a1:Artista,a2:Artista,genero):
+        super().__init__(titulo, material, a1, a2)
+        self.genero = genero
+
+    def promedioExperiencia(self):
+        promedio = (self.artistas[0].añosExperiencia + self.artistas[1].añosExperiencia)/2
+        return f"El promedio de años Experiencia de los artistas: ", promedio
+        
+
+    def incrementarPrecio(self, nombre, incremento):
+        sw = True
+        for artista in self.artistas:
+            if artista.nombre == nombre:
+                self.anuncio.precio += incremento
+                print(f"Precio incrementado  {self.anuncio.precio} para la pintura '{self.titulo}' del artista '{nombre}'")
+                sw = False
+                break
+        if sw:
+            print(f"No se ha encontrado al Artista '{nombre}'")
+
+
+#a.Crear dos objetos pintura que tengan anuncios de venta 
+
+
+a1 = Anuncio(5,300)
+a2 = Anuncio(6,200)
+
+artista1 = Artista("Anan", 45621, 9)
+artista2 = Artista("Luis", 4565, 5)
+artista3 = Artista("María", 7809, 12)
+artista4 = Artista("Carlos", 3251, 17)
+
+pintua1 = Pintura("Amanecer","lapiz",artista1,artista2,"natural")
+pintua1.agregar_anuncio(a1)
+pintua2 = Pintura("Anochecer","oleo",artista3,artista4,"auto retrato")
+pintua2.agregar_anuncio(a2)
+#b.Calcular el promedio de años Experiencia de los artistas de ambas pinturas 
+pintua1.promedioExperiencia()
+pintua2.promedioExperiencia()
+#c.Incrementar el precio en X a la pintura del artista con nombre X 
+pintua2.incrementarPrecio("Carlos",100)
