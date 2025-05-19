@@ -1,0 +1,75 @@
+class Anuncio:
+    def __init__(self,numero,precio):
+        self.numero = numero
+        self.precio = precio
+
+    def __str__(self):
+        return f"Anuncio: {self.numero}-{self.precio}"
+
+
+
+
+class Artista:
+    def __init__(self, nombre, ci, añosExp):
+        self.nombre = nombre
+        self.ci = ci
+        self.añosExperiencia = añosExp
+
+    def __str__(self):
+        return f"Artista: {self.nombre}-{self.ci}-{self.añosExperiencia}"
+
+
+class Obra:
+    def __init__(self , titulo, material,a1:Artista,a2:Artista):
+        self.titulo = titulo
+        self.material = material
+        self.artistas = [Artista(a1.nombre,a1.ci,a1.añosExperiencia),
+                         Artista(a2.nombre,a2.ci,a2.añosExperiencia)]
+
+        self.anuncio = None
+
+    def agregar_anuncio(self,b:Anuncio):
+        self.anuncio = b
+
+
+class Pintura(Obra):
+    def __init__(self ,titulo, material,a1:Artista,a2:Artista,genero):
+        super().__init__(titulo, material, a1, a2)
+        self.genero = genero
+
+
+    def masExperiencia(self):
+        if self.artistas[0].añosExperiencia > self.artistas[1].añosExperiencia:
+            return self.artistas[0].__str__()
+        else:
+            return self.artistas[1].__str__()
+
+    def montoTotal(self, a, b: Anuncio):
+        self.anuncio = b
+        pintura1 = a.anuncio.precio
+        pintura2 = self.anuncio.precio
+        total = pintura1 + pintura2
+        return total
+
+
+
+a1 = Anuncio(10,150)
+a2 = Anuncio(12,255)
+
+artista1 = Artista("Ana", 123, 5)
+artista2 = Artista("Luis", 456, 8)
+artista3 = Artista("María", 789, 12)
+artista4 = Artista("Carlos", 321, 7)
+
+# a. Crear objetos pintura: uno con anuncio y otro sin anuncio
+pintura1 = Pintura("Atardecer", "Óleo", artista1, artista2, "Paisaje")
+pintura1.agregar_anuncio(a1)
+pintura2 = Pintura("Retrato", "Acrílico", artista3, artista4, "Retrato")
+# b. Mostrar el nombre del artista con más experiencia de ambas pinturas
+
+print(pintura1.masExperiencia())
+print(pintura2.masExperiencia())
+
+# c. Se ha decidido vender la pintura sin anuncio, se pide agregar un anuncio de venta y determine el monto total de venta de ambas pinturas.
+
+print("El total de la venta es : ", pintura2.montoTotal(pintura1,a2))
